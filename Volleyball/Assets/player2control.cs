@@ -27,8 +27,8 @@ public class player2control : MonoBehaviour {
         }
         if (Input.GetKeyDown("up"))
         {
-            left.AddForce(left.transform.up * 10.0f);
-            right.AddForce(right.transform.up * 10.0f);
+            left.AddForce(new Vector2(0f, 425f));
+            right.AddForce(new Vector2(0f, 425f));
         }
     }
 }

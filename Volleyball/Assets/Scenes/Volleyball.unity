@@ -1208,6 +1208,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   left: {fileID: 1427439039}
   right: {fileID: 2099087170}
+  wall: {fileID: 675607061}
+  floor: {fileID: 162939956}
+  net: {fileID: 1603889381}
+  grounded: 0
+  wallcontact: 0
+  netcontact: 0
 --- !u!1 &2099087167
 GameObject:
   m_ObjectHideFlags: 0

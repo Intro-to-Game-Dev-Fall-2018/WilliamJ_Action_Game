@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ballBehaviour : MonoBehaviour {
 
-    int LCount;
-    int RCount;
+    public int LCount;
+    public int RCount;
     public GameObject p1;
     public GameObject p2;
     public Rigidbody2D t;
@@ -29,7 +29,7 @@ public class ballBehaviour : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         t.rotation--;
-
+	    this.GetComponent<Rigidbody2D>().velocity = this.GetComponent<Rigidbody2D>().velocity.normalized * 4f;
 	}
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -39,8 +39,14 @@ public class ballBehaviour : MonoBehaviour {
             if (state == false)
             {
                 state = true;
-                t.gravityScale = 1;
+                t.gravityScale = 0.01f;
             }
+
+            if (lastHit == "stick2" || lastHit == "stick2r")
+            {
+                RCount = 0;
+            }
+            
             if(LCount < 3)
             {
                 LCount++;
@@ -55,8 +61,14 @@ public class ballBehaviour : MonoBehaviour {
             if (state == false)
             {
                 state = true;
-                t.gravityScale = 1;
+                t.gravityScale = 0.01f;
             }
+
+            if (lastHit == "stick" || lastHit == "stickr")
+            {
+                LCount = 0;
+            }
+            
             if (RCount < 3)
             {
                 RCount++;

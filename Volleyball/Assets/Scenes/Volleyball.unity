@@ -1122,7 +1122,7 @@ Rigidbody2D:
   m_Mass: 0.0001
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0.01
   m_Material: {fileID: 6200000, guid: 3612d5e7803b32a4da066d3a8971c30a, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -1426,7 +1426,7 @@ MonoBehaviour:
   left: {fileID: 1427439039}
   right: {fileID: 2099087170}
   wall: {fileID: 675607061}
-  floor: {fileID: 162939956}
+  LFloor: {fileID: 162939956}
   net: {fileID: 1603889381}
   grounded: 0
   wallcontact: 0

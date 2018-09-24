@@ -7,7 +7,7 @@ public class player1control : MonoBehaviour {
     public Rigidbody2D left;
     public Rigidbody2D right;
 	public Collider2D wall;
-	public Collider2D floor;
+	public Collider2D LFloor;
 	public Collider2D net;
 
     public bool grounded;
@@ -25,6 +25,11 @@ public class player1control : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		
+		if(left.IsTouching(LFloor) && right.IsTouching(LFloor))
+		{
+			grounded = true;
+		}
 
 		if (left.IsTouching(wall) || right.IsTouching(wall))
 		{
@@ -45,12 +50,6 @@ public class player1control : MonoBehaviour {
 		}
 		
 		
-		if(left.IsTouching(floor) && right.IsTouching(floor))
-		{
-			grounded = true;
-		}
-		
-		
 		if(Input.GetKey("d"))
         {
 	        if(!netcontact)
@@ -68,6 +67,7 @@ public class player1control : MonoBehaviour {
 		        left.AddForce(new Vector2(0f, 425f));
                 right.AddForce(new Vector2(0f, 425f));
                 grounded = false;
+		        Debug.Log("yeet");
 	        }
 	        
         }

@@ -26,9 +26,37 @@ public class player1control : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
+		
+		if(Input.GetKey("d"))
+        {
+	        if(!netcontact)
+				this.transform.position += new Vector3(0.03f, 0);
+        }
+        else if (Input.GetKey("a"))
+        {
+	        if(!wallcontact)
+				this.transform.position += new Vector3(-0.03f, 0);
+        }
+        if(Input.GetKeyDown("w"))
+        {
+	        if(grounded)
+	        {
+		        left.AddForce(new Vector2(0f, 425f));
+                right.AddForce(new Vector2(0f, 425f));
+            }
+	        
+        }
+    }
+
+	private void FixedUpdate()
+	{
 		if(left.IsTouching(LFloor) && right.IsTouching(LFloor))
 		{
 			grounded = true;
+		}
+		else
+		{
+			grounded = false;
 		}
 
 		if (left.IsTouching(wall) || right.IsTouching(wall))
@@ -48,30 +76,5 @@ public class player1control : MonoBehaviour {
 		{
 			netcontact = false;
 		}
-		
-		
-		if(Input.GetKey("d"))
-        {
-	        if(!netcontact)
-				this.transform.position += new Vector3(0.03f, 0);
-        }
-        else if (Input.GetKey("a"))
-        {
-	        if(!wallcontact)
-				this.transform.position += new Vector3(-0.03f, 0);
-        }
-        if(Input.GetKeyDown("w"))
-        {
-	        if(grounded)
-	        {
-		        left.AddForce(new Vector2(0f, 425f));
-                right.AddForce(new Vector2(0f, 425f));
-                grounded = false;
-		        Debug.Log("yeet");
-	        }
-	        
-        }
-    }
-
-
+	}
 }

@@ -12,6 +12,11 @@ public class ballBehaviour : MonoBehaviour {
     bool state;
     int LScore;
     int RScore;
+    public TextMesh LS;
+    public TextMesh RS;
+
+    private float LTimer;
+    private float RTimer;
 
     string lastHit;
 
@@ -30,6 +35,23 @@ public class ballBehaviour : MonoBehaviour {
 	void Update () {
         t.rotation--;
 	    this.GetComponent<Rigidbody2D>().velocity = this.GetComponent<Rigidbody2D>().velocity.normalized * 4f;
+	    LTimer -= Time.deltaTime;
+	    RTimer -= Time.deltaTime;
+	    LS.text = LScore.ToString();
+	    RS.text = RScore.ToString();
+	    
+	    
+	    if (RTimer <= 0)
+	    {
+	        Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), GameObject.Find("stick2").GetComponent<Collider2D>(), false);
+	        Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), GameObject.Find("stick2r").GetComponent<Collider2D>(), false);
+	    }
+	    if (LTimer <= 0)
+	    {
+	        Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), GameObject.Find("stick").GetComponent<Collider2D>(), false);
+	        Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), GameObject.Find("stickr").GetComponent<Collider2D>(), false);
+	    }
+	    
 	}
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -51,6 +73,9 @@ public class ballBehaviour : MonoBehaviour {
             {
                 LCount++;
                 lastHit = collision.collider.name;
+                LTimer = 1.5f;
+                Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), GameObject.Find("stick").GetComponent<Collider2D>());
+                Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), GameObject.Find("stickr").GetComponent<Collider2D>());
             }
             else {
                 Reset(2);
@@ -73,6 +98,9 @@ public class ballBehaviour : MonoBehaviour {
             {
                 RCount++;
                 lastHit = collision.collider.name;
+                RTimer = 1.5f;
+                Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), GameObject.Find("stick2").GetComponent<Collider2D>());
+                Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), GameObject.Find("stick2r").GetComponent<Collider2D>());
             }
             else
             {

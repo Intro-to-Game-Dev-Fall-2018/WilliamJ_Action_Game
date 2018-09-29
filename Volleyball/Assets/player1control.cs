@@ -29,20 +29,24 @@ public class player1control : MonoBehaviour {
 		
 		if(Input.GetKey("d"))
         {
-	        if(!netcontact)
-				this.transform.position += new Vector3(0.03f, 0);
+	        if (!netcontact)
+	        {
+		        this.transform.position += new Vector3(0.03f, 0);
+	        }				
         }
         else if (Input.GetKey("a"))
         {
-	        if(!wallcontact)
-				this.transform.position += new Vector3(-0.03f, 0);
+	        if (!wallcontact)
+	        {
+		        this.transform.position += new Vector3(-0.03f, 0);
+	        }
         }
-        if(Input.GetKeyDown("w"))
+        if(Input.GetKeyDown("z"))
         {
 	        if(grounded)
 	        {
-		        left.AddForce(new Vector2(0f, 425f));
-                right.AddForce(new Vector2(0f, 425f));
+		        left.AddForce(new Vector2(0f, 360f));
+                right.AddForce(new Vector2(0f, 360f));
             }
 	        
         }

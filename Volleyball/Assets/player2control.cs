@@ -29,20 +29,26 @@ public class player2control : MonoBehaviour {
 		
         if(Input.GetKey("right"))
         {
-            if(!netcontact)
+            if (!wallcontact)
+            {
                 this.transform.position += new Vector3(0.03f, 0);
+            }
+                
         }
         else if (Input.GetKey("left"))
         {
-            if(!wallcontact)
+            if (!netcontact)
+            {
                 this.transform.position += new Vector3(-0.03f, 0);
+            }
+             
         }
-        if(Input.GetKeyDown("up"))
+        if(Input.GetKeyDown("right shift"))
         {
             if(grounded)
             {
-                left.AddForce(new Vector2(0f, 425f));
-                right.AddForce(new Vector2(0f, 425f));
+                left.AddForce(new Vector2(0f, 360f));
+                right.AddForce(new Vector2(0f, 360f));
             }
 	        
         }

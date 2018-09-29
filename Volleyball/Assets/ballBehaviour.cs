@@ -52,7 +52,17 @@ public class ballBehaviour : MonoBehaviour {
 	        Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), GameObject.Find("stickr").GetComponent<Collider2D>(), false);
 	    }
 	    
+	    
 	}
+
+
+    private void FixedUpdate()
+    {
+        if (Input.GetKeyDown("r"))
+        {
+            Reset(3);
+        }
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -73,7 +83,7 @@ public class ballBehaviour : MonoBehaviour {
             {
                 LCount++;
                 lastHit = collision.collider.name;
-                LTimer = 1.5f;
+                LTimer = 2;
                 Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), GameObject.Find("stick").GetComponent<Collider2D>());
                 Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), GameObject.Find("stickr").GetComponent<Collider2D>());
             }
@@ -98,7 +108,7 @@ public class ballBehaviour : MonoBehaviour {
             {
                 RCount++;
                 lastHit = collision.collider.name;
-                RTimer = 1.5f;
+                RTimer = 2f;
                 Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), GameObject.Find("stick2").GetComponent<Collider2D>());
                 Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), GameObject.Find("stick2r").GetComponent<Collider2D>());
             }
@@ -128,7 +138,7 @@ public class ballBehaviour : MonoBehaviour {
             Reset(2);
         }
 
-        if(collision.collider.name == "net")
+        /** if(collision.collider.name == "net")
         {
             if(lastHit == "stick2" || lastHit == "stick2r")
             {
@@ -138,22 +148,22 @@ public class ballBehaviour : MonoBehaviour {
             {
                 Reset(2);
             }
-        }
+        } **/
 
     }
 
     public void Reset(int side)
     {
-        if(side == 1)
+        if(side == 1 || side == 3)
         {
-            this.transform.position = new Vector3(-5f, -0.73f, 0f);
+            this.transform.position = new Vector3(-8f, -2.7f, 0f);
         }
         else
         {
-            this.transform.position = new Vector3(5f, -0.73f, 0f);
+            this.transform.position = new Vector3(8f, -2.7f, 0f);
         }
-        p1.transform.position = new Vector3(0.024291f, 0.09672341f, -0.01164815f);
-        p2.transform.position = new Vector3(12.98f, 0.09672341f, -0.01164815f);
+        p1.transform.position = new Vector3(0.024291f, 0.01f, -0.01164815f);
+        p2.transform.position = new Vector3(12.98f, 0.01f, -0.01164815f);
         
         LCount = 0;
         RCount = 0;
@@ -161,6 +171,12 @@ public class ballBehaviour : MonoBehaviour {
         t.gravityScale = 0;
         t.velocity = new Vector2(0, 0);
         lastHit = "";
+
+        if(side == 3)
+        {
+            LScore = 0;
+            RScore = 0;
+        }
     }
 
 

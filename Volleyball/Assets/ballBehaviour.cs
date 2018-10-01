@@ -36,7 +36,7 @@ public class ballBehaviour : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        t.rotation--;
+        t.rotation++;
 	    this.GetComponent<Rigidbody2D>().velocity = this.GetComponent<Rigidbody2D>().velocity.normalized * 4f;
 	    LTimer -= Time.deltaTime;
 	    RTimer -= Time.deltaTime;

@@ -160,9 +160,21 @@ MonoBehaviour:
   wall: {fileID: 1550650108}
   RFloor: {fileID: 1019771513}
   net: {fileID: 1785424008}
+  PLeft: {fileID: 188758246}
+  PRight: {fileID: 1065546870}
+  LIdle: {fileID: 21300000, guid: 61759223b5a46014f9d474bd0bc60ce0, type: 3}
+  RIdle: {fileID: 21300000, guid: 198ed91bfca9c6f42b9246f8325ccdf1, type: 3}
+  LJump: {fileID: 21300000, guid: 6fe0b61d9a2bbdd4e898de73ee04d1d7, type: 3}
+  RJump: {fileID: 21300000, guid: 1cc11b818f539dc42937b09991af24a1, type: 3}
+  LWalk: {fileID: 21300000, guid: 211c8a6b9b9f52c46bf63ebd37246916, type: 3}
+  RWalk: {fileID: 21300000, guid: 937103433c1630549af72e3fdd10f3fa, type: 3}
+  LCurrent: {fileID: 0}
+  RCurrent: {fileID: 0}
   grounded: 0
   wallcontact: 0
   netcontact: 0
+  moving: 0
+  frames: 0
 --- !u!1 &162939955
 GameObject:
   m_ObjectHideFlags: 0
@@ -503,6 +515,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 235.068, y: -0.013977051, z: -179.983}
+--- !u!212 &293994836 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 212239848439993230, guid: 9fc23ba7bd848814e8480d4dee2ba3df,
+    type: 2}
+  m_PrefabInternal: {fileID: 452371628}
 --- !u!1001 &452371628
 Prefab:
   m_ObjectHideFlags: 0
@@ -852,10 +869,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1140499130078978, guid: 81cb193198da47e45b6ad8ded519b2cf, type: 2}
-      propertyPath: m_Name
-      value: volleyball
-      objectReference: {fileID: 0}
     - target: {fileID: 114191689417181278, guid: 81cb193198da47e45b6ad8ded519b2cf,
         type: 2}
       propertyPath: p1
@@ -876,6 +889,15 @@ Prefab:
       propertyPath: RS
       value: 
       objectReference: {fileID: 1122096669}
+    - target: {fileID: 114191689417181278, guid: 81cb193198da47e45b6ad8ded519b2cf,
+        type: 2}
+      propertyPath: crackling
+      value: 
+      objectReference: {fileID: 1471891574}
+    - target: {fileID: 1140499130078978, guid: 81cb193198da47e45b6ad8ded519b2cf, type: 2}
+      propertyPath: m_Name
+      value: volleyball
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81cb193198da47e45b6ad8ded519b2cf, type: 2}
   m_IsPrefabAsset: 0
@@ -1223,6 +1245,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1471891573}
   - component: {fileID: 1471891572}
+  - component: {fileID: 1471891574}
   m_Layer: 0
   m_Name: background
   m_TagString: Untagged
@@ -1289,6 +1312,101 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &1471891574
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1471891571}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: f7887560f93646e41b9bf481be81e32d, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1550650107
 GameObject:
   m_ObjectHideFlags: 0
@@ -1624,9 +1742,21 @@ MonoBehaviour:
   wall: {fileID: 675607061}
   LFloor: {fileID: 162939956}
   net: {fileID: 1785424008}
+  PLeft: {fileID: 293994836}
+  PRight: {fileID: 2099087169}
+  LIdle: {fileID: 21300000, guid: 1eaca29d3aa2f2f46a92b22dd086a58b, type: 3}
+  RIdle: {fileID: 21300000, guid: 3a70630c487174644879ddd6a443632f, type: 3}
+  LJump: {fileID: 21300000, guid: 066f4009debb76c42bc65781bbf0c8a5, type: 3}
+  RJump: {fileID: 21300000, guid: 72d00ab4ee61aaa46846934202113e93, type: 3}
+  LWalk: {fileID: 21300000, guid: fc7cdad0ddd5b41438f259ad59a4319a, type: 3}
+  RWalk: {fileID: 21300000, guid: 96aefb62c20308347a16bb22ee7ac863, type: 3}
+  LCurrent: {fileID: 0}
+  RCurrent: {fileID: 0}
   grounded: 0
   wallcontact: 0
   netcontact: 0
+  moving: 0
+  frames: 0
 --- !u!1 &2099087167
 GameObject:
   m_ObjectHideFlags: 0

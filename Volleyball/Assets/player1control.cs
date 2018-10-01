@@ -9,10 +9,25 @@ public class player1control : MonoBehaviour {
 	public Collider2D wall;
 	public Collider2D LFloor;
 	public Collider2D net;
+    public SpriteRenderer PLeft;
+    public SpriteRenderer PRight;
+    public Sprite LIdle;
+    public Sprite RIdle;
+    public Sprite LJump;
+    public Sprite RJump;
+    public Sprite LWalk;
+    public Sprite RWalk;
+    public Sprite LCurrent;
+    public Sprite RCurrent;
+
 
     public bool grounded;
     public bool wallcontact;
 	public bool netcontact;
+    public bool moving;
+
+
+    public int frames;
     
     
 	// Use this for initialization
@@ -21,26 +36,40 @@ public class player1control : MonoBehaviour {
 	    grounded = true;
 		wallcontact = false;
 		netcontact = false;
+        moving = false;
+        LCurrent = LIdle;
+        RCurrent = RIdle;
+        frames =  0;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
 		
 		if(Input.GetKey("d"))
         {
 	        if (!netcontact)
 	        {
 		        this.transform.position += new Vector3(0.03f, 0);
-	        }				
+                moving = true;
+	        }
+            PLeft.flipX = false;
+            PRight.flipX = false;
         }
         else if (Input.GetKey("a"))
         {
 	        if (!wallcontact)
 	        {
 		        this.transform.position += new Vector3(-0.03f, 0);
+                moving = true;
 	        }
+            PLeft.flipX = true;
+            PRight.flipX = true;
         }
+        else
+        {
+            moving = false;
+        }
+
         if(Input.GetKeyDown("z"))
         {
 	        if(grounded)
@@ -50,6 +79,30 @@ public class player1control : MonoBehaviour {
             }
 	        
         }
+
+
+
+
+        if(moving)
+        {
+            frames++;
+
+            if(frames == 20)
+            {
+                if(LCurrent == LIdle)
+                {
+                    LCurrent = LWalk;
+                    RCurrent = RWalk;
+                }
+                else
+                {
+                    LCurrent = LIdle;
+                    RCurrent = RIdle;
+                }
+
+                frames = 0;
+            }
+        }
     }
 
 	private void FixedUpdate()
@@ -57,11 +110,15 @@ public class player1control : MonoBehaviour {
 		if(left.IsTouching(LFloor) && right.IsTouching(LFloor))
 		{
 			grounded = true;
+            PLeft.sprite = LCurrent;
+            PRight.sprite = RCurrent;
 		}
 		else
 		{
 			grounded = false;
-		}
+            PLeft.sprite = LJump;
+            PRight.sprite = RJump;
+        }
 
 		if (left.IsTouching(wall) || right.IsTouching(wall))
 		{
@@ -81,4 +138,5 @@ public class player1control : MonoBehaviour {
 			netcontact = false;
 		}
 	}
+
 }

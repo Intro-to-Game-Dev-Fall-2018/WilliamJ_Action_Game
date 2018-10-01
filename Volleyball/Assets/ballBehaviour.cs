@@ -14,6 +14,9 @@ public class ballBehaviour : MonoBehaviour {
     int RScore;
     public TextMesh LS;
     public TextMesh RS;
+    public AudioSource wallBounce;
+    public AudioSource playerBounce;
+    public AudioSource crackling;
 
     private float LTimer;
     private float RTimer;
@@ -72,6 +75,7 @@ public class ballBehaviour : MonoBehaviour {
             {
                 state = true;
                 t.gravityScale = 0.01f;
+                crackling.Play();
             }
 
             if (lastHit == "stick2" || lastHit == "stick2r")
@@ -86,6 +90,15 @@ public class ballBehaviour : MonoBehaviour {
                 LTimer = 2;
                 Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), GameObject.Find("stick").GetComponent<Collider2D>());
                 Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), GameObject.Find("stickr").GetComponent<Collider2D>());
+                if(playerBounce.isPlaying)
+                {
+                    playerBounce.Stop();
+                    playerBounce.Play();
+                }
+                else
+                {
+                    playerBounce.Play();
+                }
             }
             else {
                 Reset(2);
@@ -111,6 +124,15 @@ public class ballBehaviour : MonoBehaviour {
                 RTimer = 2f;
                 Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), GameObject.Find("stick2").GetComponent<Collider2D>());
                 Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), GameObject.Find("stick2r").GetComponent<Collider2D>());
+                if (playerBounce.isPlaying)
+                {
+                    playerBounce.Stop();
+                    playerBounce.Play();
+                }
+                else
+                {
+                    playerBounce.Play();
+                }
             }
             else
             {
@@ -138,17 +160,18 @@ public class ballBehaviour : MonoBehaviour {
             Reset(2);
         }
 
-        /** if(collision.collider.name == "net")
+        if(collision.collider.name == "right wall" || collision.collider.name == "left wall" || collision.collider.name == "ceiling" || collision.collider.name == "net")
         {
-            if(lastHit == "stick2" || lastHit == "stick2r")
+            if (wallBounce.isPlaying)
             {
-                Reset(1);
+                wallBounce.Stop();
+                wallBounce.Play();
             }
             else
             {
-                Reset(2);
+                wallBounce.Play();
             }
-        } **/
+        }
 
     }
 
@@ -176,6 +199,7 @@ public class ballBehaviour : MonoBehaviour {
         {
             LScore = 0;
             RScore = 0;
+            crackling.Stop();
         }
     }
 

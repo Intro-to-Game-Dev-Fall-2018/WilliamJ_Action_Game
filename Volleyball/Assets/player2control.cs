@@ -21,11 +21,12 @@ public class player2control : MonoBehaviour {
     public Sprite RCurrent;
 
 
+    public bool lastDirection;
     public bool grounded;
-    public bool wallcontact;
-    public bool netcontact;
     public bool moving;
-
+    float ButtonCooler;
+    int ButtonLCount;
+    int ButtonRCount;
 
     public int frames;
 
@@ -34,53 +35,118 @@ public class player2control : MonoBehaviour {
     void Start ()
     {
         grounded = true;
-        wallcontact = false;
-        netcontact = false;
         moving = false;
         LCurrent = LIdle;
         RCurrent = RIdle;
         frames = 0;
+        ButtonCooler = 0.5f;
+        ButtonLCount = 0;
+        ButtonRCount = 0;
     }
 	
     // Update is called once per frame
     void Update () {
 		
 		
-        if(Input.GetKey("right"))
+        if (Input.GetKey("right"))
         {
-            if (!wallcontact)
-            {
-                this.transform.position += new Vector3(0.03f, 0);
-                moving = true;
-            }
+            this.transform.position += new Vector3(0.03f, 0);
+            moving = true;
             PLeft.flipX = true;
-            PRight.flipX = true;
+            //PRight.flipX = false;
+        }
+        if (Input.GetKeyDown("right"))
+        {
+            //if(!grounded)
+            {
+                if (ButtonCooler > 0 && ButtonRCount == 1)
+                {
+                    if (!lastDirection)
+                    {
+                        left.velocity = new Vector2(0f, 0f);
+                    }
+                    left.AddForce(new Vector2(300f, 0f));
+                    lastDirection = true;
+                }
+                else
+                {
+                    ButtonCooler = 0.5f;
+                    ButtonRCount += 1;
+                }
+
+            }
 
         }
-        else if (Input.GetKey("left"))
+
+
+
+        if (Input.GetKey("left"))
         {
-            if (!netcontact)
-            {
-                this.transform.position += new Vector3(-0.03f, 0);
-                moving = true;
-            }
+            this.transform.position += new Vector3(-0.03f, 0);
+            moving = true;
+
             PLeft.flipX = false;
-            PRight.flipX = false;
+            //PRight.flipX = true;
+        }
+        if (Input.GetKeyDown("left"))
+        {
+            //if (!grounded)
+            {
+                if (ButtonCooler > 0 && ButtonLCount == 1)
+                {
+                    //Has double tapped
+                    //Debug.Log("dash");
+                    //left.AddForce(new Vector2(-30f, 0f));
+                    if (lastDirection)
+                    {
+                        left.velocity = new Vector2(0f, 0f);
+                    }
+                    left.AddForce(new Vector2(-300f, 0f));
+                    lastDirection = false;
+                }
+                else
+                {
+                    ButtonCooler = 0.5f;
+                    ButtonLCount += 1;
+                }
+
+            }
+
+        }
+
+
+
+        if (Input.GetKeyDown("up"))
+        {
+
+            left.AddForce(new Vector2(0f, 360f));
+            //right.AddForce(new Vector2(0f, 360f));
+
+        }
+        if (Input.GetKeyDown("down"))
+        {
+
+            left.AddForce(new Vector2(0f, -360f));
+            //right.AddForce(new Vector2(0f, -360f));
+
+        }
+
+
+        if (ButtonCooler > 0)
+        {
+
+            ButtonCooler -= 1 * Time.deltaTime;
 
         }
         else
         {
-            moving = false;
+            ButtonLCount = 0;
+            ButtonRCount = 0;
         }
 
-        if(Input.GetKeyDown("right shift"))
+        if (!(Input.GetKeyDown("right") || Input.GetKeyDown("left")))
         {
-            if(grounded)
-            {
-                left.AddForce(new Vector2(0f, 360f));
-                right.AddForce(new Vector2(0f, 360f));
-            }
-	        
+            moving = false;
         }
 
 
@@ -109,7 +175,7 @@ public class player2control : MonoBehaviour {
 
     private void FixedUpdate()
     {
-        if(left.IsTouching(RFloor) && right.IsTouching(RFloor))
+        if(left.IsTouching(RFloor))
         {
             grounded = true;
             PLeft.sprite = LCurrent;
@@ -122,22 +188,5 @@ public class player2control : MonoBehaviour {
             PRight.sprite = RJump;
         }
 
-        if (left.IsTouching(wall) || right.IsTouching(wall))
-        {
-            wallcontact = true;
-        }
-        else
-        {
-            wallcontact = false;
-        }
-
-        if (left.IsTouching(net) || right.IsTouching(net))
-        {
-            netcontact = true;
-        }
-        else
-        {
-            netcontact = false;
-        }
     }
 }

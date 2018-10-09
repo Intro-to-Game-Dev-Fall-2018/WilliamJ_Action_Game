@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class ballBehaviour : MonoBehaviour {
 
-    public int LCount;
-    public int RCount;
+
     public GameObject p1;
     public GameObject p2;
     public Rigidbody2D t;
@@ -25,19 +24,17 @@ public class ballBehaviour : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        LCount = 0;
-        RCount = 0;
         LScore = 0;
         RScore = 0;
         state = false;
         t.gravityScale = 0;
-
-	}
+        Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), GameObject.Find("InvisWall").GetComponent<Collider2D>());
+    }
 	
 	// Update is called once per frame
 	void Update () {
         t.rotation++;
-	    this.GetComponent<Rigidbody2D>().velocity = this.GetComponent<Rigidbody2D>().velocity.normalized * 4f;
+	    this.GetComponent<Rigidbody2D>().velocity = this.GetComponent<Rigidbody2D>().velocity.normalized * 5f;
 	    LTimer -= Time.deltaTime;
 	    RTimer -= Time.deltaTime;
 	    LS.text = LScore.ToString();
@@ -47,11 +44,11 @@ public class ballBehaviour : MonoBehaviour {
 	    if (RTimer <= 0)
 	    {
 	        Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), GameObject.Find("stick2").GetComponent<Collider2D>(), false);
-	        Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), GameObject.Find("stick2r").GetComponent<Collider2D>(), false);
+	        //Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), GameObject.Find("stick2r").GetComponent<Collider2D>(), false);
 	    }
 	    if (LTimer <= 0)
 	    {
-	        Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), GameObject.Find("stick").GetComponent<Collider2D>(), false);
+	        //Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), GameObject.Find("stick").GetComponent<Collider2D>(), false);
 	        Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), GameObject.Find("stickr").GetComponent<Collider2D>(), false);
 	    }
 	    
@@ -78,30 +75,18 @@ public class ballBehaviour : MonoBehaviour {
                 crackling.Play();
             }
 
-            if (lastHit == "stick2" || lastHit == "stick2r")
+            lastHit = collision.collider.name;
+            LTimer = 2;
+            //Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), GameObject.Find("stick").GetComponent<Collider2D>());
+            Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), GameObject.Find("stickr").GetComponent<Collider2D>());
+            if(playerBounce.isPlaying)
             {
-                RCount = 0;
+                playerBounce.Stop();
+                playerBounce.Play();
             }
-            
-            if(LCount < 3)
+            else
             {
-                LCount++;
-                lastHit = collision.collider.name;
-                LTimer = 2;
-                Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), GameObject.Find("stick").GetComponent<Collider2D>());
-                Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), GameObject.Find("stickr").GetComponent<Collider2D>());
-                if(playerBounce.isPlaying)
-                {
-                    playerBounce.Stop();
-                    playerBounce.Play();
-                }
-                else
-                {
-                    playerBounce.Play();
-                }
-            }
-            else {
-                Reset(2);
+                playerBounce.Play();
             }
         }
         if (collision.collider.name == "stick2" || collision.collider.name == "stick2r")
@@ -112,35 +97,22 @@ public class ballBehaviour : MonoBehaviour {
                 t.gravityScale = 0.01f;
             }
 
-            if (lastHit == "stick" || lastHit == "stickr")
+            lastHit = collision.collider.name;
+            RTimer = 2f;
+            //Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), GameObject.Find("stick2r").GetComponent<Collider2D>());
+            if (playerBounce.isPlaying)
             {
-                LCount = 0;
-            }
-            
-            if (RCount < 3)
-            {
-                RCount++;
-                lastHit = collision.collider.name;
-                RTimer = 2f;
-                Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), GameObject.Find("stick2").GetComponent<Collider2D>());
-                Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), GameObject.Find("stick2r").GetComponent<Collider2D>());
-                if (playerBounce.isPlaying)
-                {
-                    playerBounce.Stop();
-                    playerBounce.Play();
-                }
-                else
-                {
-                    playerBounce.Play();
-                }
+                playerBounce.Stop();
+                playerBounce.Play();
             }
             else
             {
-                Reset(1);
+                playerBounce.Play();
             }
+        
         }
 
-        if (collision.collider.name == "RFloor" && (lastHit == "stick" || lastHit == "stickr"))
+        if (collision.collider.name == "RFloor" && (lastHit == "stickr"))
         {
             LScore++;
             Reset(1);
@@ -150,7 +122,7 @@ public class ballBehaviour : MonoBehaviour {
             Reset(1);
         }
 
-        if (collision.collider.name == "LFloor" && (lastHit == "stick2" || lastHit == "stick2r"))
+        if (collision.collider.name == "LFloor" && (lastHit == "stick2"))
         {
             RScore++;
             Reset(2);
@@ -179,17 +151,18 @@ public class ballBehaviour : MonoBehaviour {
     {
         if(side == 1 || side == 3)
         {
-            this.transform.position = new Vector3(-8f, -2.7f, 0f);
+            this.transform.position = new Vector3(-5f, -2.7f, 0f);
         }
         else
         {
-            this.transform.position = new Vector3(8f, -2.7f, 0f);
+            this.transform.position = new Vector3(5f, -2.7f, 0f);
         }
-        p1.transform.position = new Vector3(0.024291f, 0.01f, -0.01164815f);
-        p2.transform.position = new Vector3(12.98f, 0.01f, -0.01164815f);
-        
-        LCount = 0;
-        RCount = 0;
+        p1.transform.position = new Vector3(-5f, -4.05f, 0.01164815f);
+        p2.transform.position = new Vector3(5, -4.49f, -0.01164815f);
+        GameObject.Find("stick2").GetComponent<Rigidbody2D>().velocity = new Vector2(0f, 0f);
+        GameObject.Find("stickr").GetComponent<Rigidbody2D>().velocity = new Vector2(0f, 0f);
+
+
         state = false;
         t.gravityScale = 0;
         t.velocity = new Vector2(0, 0);

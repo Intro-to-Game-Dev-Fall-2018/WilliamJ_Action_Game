@@ -20,11 +20,12 @@ public class player1control : MonoBehaviour {
     public Sprite LCurrent;
     public Sprite RCurrent;
 
-
+    public bool lastDirection;
     public bool grounded;
-    public bool wallcontact;
-	public bool netcontact;
     public bool moving;
+    float ButtonCooler;
+    int ButtonLCount;
+    int ButtonRCount;
 
 
     public int frames;
@@ -34,56 +35,144 @@ public class player1control : MonoBehaviour {
 	void Start ()
 	{
 	    grounded = true;
-		wallcontact = false;
-		netcontact = false;
         moving = false;
         LCurrent = LIdle;
         RCurrent = RIdle;
         frames =  0;
-	}
+        ButtonCooler = 0.5f;
+        ButtonLCount = 0;
+        ButtonRCount = 0;
+    }
 	
 	// Update is called once per frame
 	void Update () {
 		
 		if(Input.GetKey("d"))
         {
-	        if (!netcontact)
-	        {
-		        this.transform.position += new Vector3(0.03f, 0);
-                moving = true;
-	        }
-            PLeft.flipX = false;
+            this.transform.position += new Vector3(0.03f, 0);
+            moving = true;
+            //PLeft.flipX = false;
             PRight.flipX = false;
         }
-        else if (Input.GetKey("a"))
+        if(Input.GetKeyDown("d"))
         {
-	        if (!wallcontact)
-	        {
-		        this.transform.position += new Vector3(-0.03f, 0);
-                moving = true;
-	        }
-            PLeft.flipX = true;
+            //if(!grounded)
+            {
+                if (ButtonCooler > 0 && ButtonRCount == 1)
+                {
+                    //Has double tapped
+                    //Debug.Log("dashed");
+                    //left.AddForce(new Vector2(300f, 0f));
+                    if (!lastDirection)
+                    {
+                        right.velocity = new Vector2(0f, 0f);
+                    }
+                    right.AddForce(new Vector2(300f, 0f));
+                    lastDirection = true;
+                }
+                else
+                {
+                    ButtonCooler = 0.5f;
+                    ButtonRCount += 1;
+                }
+
+            }
+            
+        }
+
+
+
+        if (Input.GetKey("a"))
+        {
+		    this.transform.position += new Vector3(-0.03f, 0);
+            moving = true;
+
+            //PLeft.flipX = true;
             PRight.flipX = true;
         }
+        if (Input.GetKeyDown("a"))
+        {
+            //if (!grounded)
+            {
+                if (ButtonCooler > 0 && ButtonLCount == 1)
+                {
+                    //Has double tapped
+                    //Debug.Log("dash");
+                    //left.AddForce(new Vector2(-30f, 0f));
+                    if(lastDirection)
+                    {
+                        right.velocity = new Vector2(0f, 0f);
+                    }
+                    right.AddForce(new Vector2(-300f, 0f));
+                    lastDirection = false;
+                }
+                else
+                {
+                    ButtonCooler = 0.5f;
+                    ButtonLCount += 1;
+                }
+
+            }
+
+        }
+
+
+
+        //{
+        //    moving = false;
+        //}
+
+        if (Input.GetKeyDown("w"))
+        {
+
+		    //left.AddForce(new Vector2(0f, 360f));
+            right.AddForce(new Vector2(0f, 360f));
+
+        }
+        if (Input.GetKeyDown("s"))
+        {
+
+            //left.AddForce(new Vector2(0f, 360f));
+            right.AddForce(new Vector2(0f, -360f));
+
+        }
+
+        //var ButtonCooler : float = 0.5; // Half a second before reset
+        //var ButtonCount : int = 0;
+        //function Update()
+        //{
+        //    if (Input.anyKeyDown())
+        //    {
+
+        //        if (ButtonCooler > 0 && ButtonCount == 1/*Number of Taps you want Minus One*/)
+        //        {
+        //            //Has double tapped
+        //        }
+        //        else
+        //        {
+        //            ButtonCooler = 0.5;
+        //            ButtonCount += 1;
+        //        }
+        //    }
+
+        if (ButtonCooler > 0)
+        {
+
+            ButtonCooler -= 1 * Time.deltaTime;
+
+        }
         else
+        {
+            ButtonLCount = 0;
+            ButtonRCount = 0;
+        }
+  
+        if(!(Input.GetKeyDown("d") || Input.GetKeyDown("a")))
         {
             moving = false;
         }
 
-        if(Input.GetKeyDown("z"))
-        {
-	        if(grounded)
-	        {
-		        left.AddForce(new Vector2(0f, 360f));
-                right.AddForce(new Vector2(0f, 360f));
-            }
-	        
-        }
-
-
-
-
-        if(moving)
+        if (moving)
         {
             frames++;
 
@@ -107,7 +196,7 @@ public class player1control : MonoBehaviour {
 
 	private void FixedUpdate()
 	{
-		if(left.IsTouching(LFloor) && right.IsTouching(LFloor))
+		if(right.IsTouching(LFloor))
 		{
 			grounded = true;
             PLeft.sprite = LCurrent;
@@ -120,23 +209,6 @@ public class player1control : MonoBehaviour {
             PRight.sprite = RJump;
         }
 
-		if (left.IsTouching(wall) || right.IsTouching(wall))
-		{
-			wallcontact = true;
-		}
-		else
-		{
-			wallcontact = false;
-		}
-
-		if (left.IsTouching(net) || right.IsTouching(net))
-		{
-			netcontact = true;
-		}
-		else
-		{
-			netcontact = false;
-		}
 	}
 
 }
